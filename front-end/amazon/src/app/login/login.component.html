@@ -1,0 +1,25 @@
+<div class="p-grid p-dir-col">
+    <div class="p-col-12">
+      <h1>Login</h1>
+    </div>
+    <div class="p-col-12">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="p-field p-grid">
+          <label for="username" class="p-col-3">Username</label>
+          <input formControlName="username" id="username" type="text" pInputText>
+        </div>
+        <div class="p-field p-grid">
+          <label for="password" class="p-col-3">Password</label>
+          <input formControlName="password" id="password" type="password" pInputText>
+        </div>
+        <div class="p-col-12">
+          <button pButton type="submit" [disabled]="!loginForm.valid">Login</button>
+        </div>
+      </form>
+    </div>
+    <div class="p-col-12">
+        @if(error){
+            <div class="p-error">{{ error }}</div>
+        }     
+    </div>
+  </div>
