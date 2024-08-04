@@ -1,0 +1,66 @@
+<div>
+  <app-header></app-header>
+</div>
+<div class="p-grid p-dir-col">
+    <div class="p-col-12">
+      <p-tabView>      
+        <div>
+          <div class="p-col-12">
+            <p-tabView>
+              <p-tabPanel header="Products">
+                <div>
+                  <div class="p-col-fixed p-lg-2 p-md-2 p-sm-2 p-xs-2">
+                    <button pButton (click)="createProduct()">Create Product</button>
+                  </div>
+                </div>
+                <div class="p-grid p-dir-col">
+                  <div class="p-col-12">
+                    <p-carousel [value]="products" [numVisible]="3" [responsiveOptions]="responsiveOptions">
+                      <ng-template pTemplate="item" let-product>
+                        <p-card [header]="product.productName" [style]="{'margin-bottom': '20px'}">
+                          <img [src]="product.productImageUrl" alt="{{product.productName}}" height="50">
+                          <p>Category: {{ product.category }}</p>
+                          <p>Description: {{ product.productDescription }}</p>
+                          <p>Price: {{ product.productPrice }}</p>
+                          <button pButton (click)="editProduct(product)">Edit</button>
+                          <button pButton (click)="deleteProduct(product)">Delete</button>
+                        </p-card>
+                      </ng-template>
+                    </p-carousel>
+                  </div>
+                </div>
+              </p-tabPanel>
+        
+        <p-tabPanel header="Users">
+          <div class="p-grid p-dir-col">
+            <div class="p-col-12">
+              <p-table [value]="users" [rows]="10" [paginator]="true">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Username</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                  <tr>
+                    <td>{{ user.username }}</td>
+                    <td>
+                      <span [ngClass]="{'status-dot': true, 'active': user.isActive, 'inactive': !user.isActive}"></span>
+                      {{user.isActive ? 'Active' : 'Inactive'}}
+                    </td> 
+                    <td>
+                      <button pButton (click)="toggleUserStatus(user)">{{user.isActive ? 'Deactivate': 'Activate'}}</button>
+                    </td>                                       
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+  <div>
+    <app-footer></app-footer>
+</div>

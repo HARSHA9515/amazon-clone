@@ -1,0 +1,13 @@
+<app-header></app-header>
+<p-carousel [value]="products" [numVisible]="3" [responsiveOptions]="responsiveOptions">
+    <ng-template pTemplate="item" let-product>
+      <p-card [header]="product.productName" [style]="{'margin-bottom': '20px'}">
+        <img [src]="product.productImageUrl" alt="{{product.productName}}" height="50">
+        <p>Category: {{ product.category }}</p>
+        <p>Description: {{ product.productDescription }}</p>
+        <p>Price: {{ product.productPrice }}</p>
+      </p-card>
+    </ng-template>
+  </p-carousel>
+
+  <app-footer></app-footer>
