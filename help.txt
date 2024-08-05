@@ -1,2 +1,4 @@
 Reference: 
 https://deeppatel23.medium.com/rest-api-with-node-js-and-firebase-4d618f1bbc60
+
+https://console.firebase.google.com/u/0/project/angular-ecommerce-ac49d/firestore/databases/-default-/data
