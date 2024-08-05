@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { ProductComponent } from './user/product/product.component';
 
-import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboard.component';
-import { UserDashboardComponent } from '../user/user-dashboard/user-dashboard.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { UserDashboardComponent } from './user/home/home.component';
 export const routes: Routes = [
   {
     path: '',
@@ -15,5 +16,9 @@ export const routes: Routes = [
   {
     path: 'admin-dashboard',
     component:AdminDashboardComponent
+  },
+  {
+    path: 'product/:id',
+    component: ProductComponent
   }
 ];

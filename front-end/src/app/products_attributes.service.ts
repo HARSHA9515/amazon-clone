@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Category, ProductBrand, ProductType } from '../shared/models/productAttributes';
+import { Category, ProductBrand, ProductType } from './shared/models/productAttributes';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +30,11 @@ export class ProductAttributesService {
     return this.http.get<Category>(`${this.categoriesUrl}/${id}`, this.getHttpOptions());
   }
 
-  createCategory(category: Category): Observable<Category> {
+  createCategory(category: FormData): Observable<Category> {
     return this.http.post<Category>(this.categoriesUrl, category, this.getHttpOptions());
   }
 
-  updateCategory(id: string, category: Category): Observable<void> {
+  updateCategory(id: string, category: FormData): Observable<void> {
     return this.http.put<void>(`${this.categoriesUrl}/${id}`, category, this.getHttpOptions());
   }
 

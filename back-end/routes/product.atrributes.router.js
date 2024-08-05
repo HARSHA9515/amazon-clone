@@ -1,20 +1,37 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const { v4: uuidv4 } = require('uuid'); 
 const { db } = require('../utils/admin'); // Adjust the path as needed
+const { uploadImageToFirebase } = require('../handlers/product.handler');
 
 const router = express.Router();
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 // Create a new category
-router.post('/product_attributes/categories', async (req, res) => {
+router.post('/product_attributes/categories',upload.single('categoryImg'), async (req, res) => {
     try {
       const newCategory = req.body;
       if (!newCategory.name) {
         return res.status(400).json({ error: 'Category name is required' });
       }
-  
+      
       // Generate a unique category ID
       const id = uuidv4();
       const categoryData = { id, ...newCategory };
+      
+      const categoryImg = req.file;
+      if (categoryImg) {
+        const fileName = `${id}_${path.basename(categoryImg.originalname)}`;
+        try {
+          const imageUrl = await uploadImageToFirebase(categoryImg.buffer, fileName, categoryImg.mimetype, "categories");
+          categoryData.imageUrl = imageUrl;
+        } catch (error) {
+          console.log("error",error)
+          return res.status(500).json({ error: 'Error uploading image' });
+        }
+      }
   
       const categoryRef = db.collection('product_categories').doc(id);
       await categoryRef.set(categoryData);
@@ -60,13 +77,26 @@ router.get('/product_attributes/categories/:id', async (req, res) => {
 });
 
 // Update a category
-router.put('/product_attributes/categories/:id', async (req, res) => {
+router.put('/product_attributes/categories/:id', upload.single('categoryImg'), async (req, res) => {
   try {
     const id = req.params.id;
     const updates = req.body;
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ error: 'No data provided for update' });
     }
+
+    const categoryImg = req.file;
+      if (categoryImg) {
+        const fileName = `${id}_${path.basename(categoryImg.originalname)}`;
+        try {
+          const imageUrl = await uploadImageToFirebase(categoryImg.buffer, fileName, categoryImg.mimetype, "categories");
+          updates.imageUrl = imageUrl;
+        } catch (error) {
+          console.log("error",error)
+          return res.status(500).json({ error: 'Error uploading image' });
+        }
+      }
+
     const categoryRef = db.collection('product_categories').doc(id);
     const categoryDoc = await categoryRef.get();
     if (!categoryDoc.exists) {

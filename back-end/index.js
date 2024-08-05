@@ -37,7 +37,9 @@ app.use(async(req,res, next) => {
 app.use('/api/auth', authRouter); // Use the authentication routes with /api/auth prefix
 app.use('/api', isAuthenticated, usersRouter);
 app.use('/api', isAuthenticated, productRouter);
+// app.use('/api', productRouter);
 app.use('/api', isAuthenticated, productAttributesRouter);
+// app.use('/api', productAttributesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

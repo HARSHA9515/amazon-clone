@@ -1,39 +1,14 @@
 const express = require('express');
 const multer = require('multer');
-const { db, bucket } = require('../utils/admin'); // Adjust the path as needed
+const { db, bucket } = require('../utils/admin');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const { isAdminLoggedIn } = require('./../utils/auth')
-const { getCategoriesObj,getProductTypeObj, getProductBrandObj } = require('../handlers/product.handler');
+const { getCategoriesObj,getProductTypeObj, getProductBrandObj, uploadImageToFirebase} = require('../handlers/product.handler');
 const router = express.Router();
 // Set up multer for file upload
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
-// Function to upload image to Firebase Storage
-const uploadImageToFirebase = (fileBuffer, fileName, contentType) => {
-  return new Promise((resolve, reject) => {
-    const file = bucket.file("products/"+fileName);
-    const stream = file.createWriteStream({
-      metadata: {
-        contentType: contentType
-      }
-    });
-
-    stream.on('error', (err) => {
-      console.error('Error uploading image: ', err);
-      reject('Error uploading image');
-    });
-
-    stream.on('finish', async () => {
-      await file.makePublic();
-      const imageUrl = `https://storage.googleapis.com/${bucket.name}/products/${fileName}`;
-      resolve(imageUrl);
-    });
-
-    stream.end(fileBuffer);
-  });
-};
 
 // Create a new product
 router.post('/products',isAdminLoggedIn, upload.single('productImage'), async (req, res) => {
@@ -147,15 +122,15 @@ router.get('/products/:id', async (req, res) => {
     const product = doc.data();
     product.id = doc.id;
 
-    const categoryRef = db.collection('categories').doc(product.categoryId);
-    const categoryDoc = await categoryRef.get();
-
-    if (categoryDoc.exists) {
-      product.categoryName = categoryDoc.data().categoryName;
-    } else {
-      product.categoryName = 'Unknown Category';
-    }
-
+    const [categoryNameMap, productTypeMap, brandNameMap] = await Promise.all([
+      getCategoriesObj(product.categoryId),
+      getProductTypeObj(product.productTypeId),
+      getProductBrandObj(product.brandNameId)
+    ]);
+    
+    product.categoryName = categoryNameMap[product.categoryId] || "-";
+    product.productType = productTypeMap[product.productTypeId] || "-";
+    product.brandName = brandNameMap[product.brandNameId] || "-";
     res.status(200).json(product);
   } catch (error) {
     console.error('Error getting product: ', error);
