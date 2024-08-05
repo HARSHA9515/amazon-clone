@@ -1,8 +1,13 @@
 export class Product {
-  productId?: number;
-  productName!: string;
-  category!: string;
-  productImageUrl!: string;
-  productDescription!: string;
-  productPrice!: number;
+  id?: string;
+  productName: string = '';
+  categoryName: string = '';
+  categoryId?: string = '';
+  brandName: string = '';
+  brandNameId?: string = '';
+  productType: string = '';
+  productTypeId?: string = '';
+  productDescription: string = '';
+  productPrice: number = 0;
+  productImageUrl: string = '';
 }

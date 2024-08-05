@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators,ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -17,7 +17,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 export class LoginComponent {
   loginForm!: FormGroup;
   error!: string;
-  
+
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -33,9 +33,9 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe(
         (response: any) => {
           if (response.user.role === 'admin') {
-            this.router.navigate(['admin-dashboard']);
+            this.router.navigate(['/admin-dashboard']);
           } else if (response.user.role === 'user') {
-            this.router.navigate(['user-dashboard']);
+            this.router.navigate(['/']);
           }
         },
         (error: { message: string; }) => {

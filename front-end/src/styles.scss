@@ -1,6 +1,8 @@
 // Import theme files
 @import 'shared/styles/light-theme.scss';
 @import 'shared/styles/dark-theme.scss';
+@import "primeicons/primeicons.css";
+@import "primeng/resources/primeng.css";
 
 // Define a mixin for light theme
 @mixin light-theme {
@@ -8,15 +10,11 @@
   $secondary-color: #f7f7f7;
   $background-color: #ffffff;
   $text-color: #333333;
+
   body {
     background-color: $background-color;
     color: $text-color;
   }
-  .p-button {
-    background-color: $primary-color;
-    color: $text-color;
-  }
-  // Add more styles for each theme variable
 }
 
 // Define a mixin for dark theme
@@ -25,15 +23,11 @@
   $secondary-color: #333333;
   $background-color: #212121;
   $text-color: #ffffff;
+
   body {
     background-color: $background-color;
     color: $text-color;
   }
-  .p-button {
-    background-color: $primary-color;
-    color: $text-color;
-  }
-  // Add more styles for each theme variable
 }
 
 // Use the mixin to switch themes
@@ -44,5 +38,16 @@ $theme: 'light'; // Set the initial theme to light
 } @else if $theme == 'dark' {
   @include dark-theme;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a.p-tabview-nav-link{
+  text-decoration: none;
+}

@@ -1,6 +1,9 @@
 /back-end/node_modules/*
 /front-end/node_modules/*
+/back-end/angular-ecommerce-ac49d-firebase-adminsdk-aq5m7-5bfc1dba98.json
 
+/front-end/.angular
+/front-end/amazon/*
 
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
