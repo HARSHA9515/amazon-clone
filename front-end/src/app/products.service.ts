@@ -1,66 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Product } from '../shared/models/product';
-import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private baseUrl = 'http://localhost:3000/api/products'; // Adjust the URL as needed
 
-  private apiUrl = 'http://localhost:3000/api/products';
-  private token: string | null = sessionStorage.getItem('token');
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-
-  getProducts(): Observable<any> {
-    return this.http.get(this.apiUrl)
-      .pipe(
-        tap(data => console.log('All: ' + JSON.stringify(data))),
-        catchError(this.handleError)
-      );
+  private getHttpOptions() {
+    return {
+      withCredentials: true
+    };
   }
 
-  getProduct(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`)
-      .pipe(
-        tap(data => console.log('Product: ' + JSON.stringify(data))),
-        catchError(this.handleError)
-      );
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.baseUrl, this.getHttpOptions());
   }
 
-  createProduct(product: any): Observable<any> {
-    return this.http.post(this.apiUrl, product)
-      .pipe(
-        tap(data => console.log('Product: ' + JSON.stringify(data))),
-        catchError(this.handleError)
-      );
+  createProduct(product: FormData): Observable<Product> {
+    return this.http.post<Product>(this.baseUrl, product, this.getHttpOptions());
   }
 
-  updateProduct(id: number, product: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, product)
-      .pipe(
-        tap(data => console.log('Product: ' + JSON.stringify(data))),
-        catchError(this.handleError)
-      );
+  updateProduct(productId: string, product: FormData): Observable<Product> {
+    return this.http.put<Product>(`${this.baseUrl}/${productId}`, product, this.getHttpOptions());
   }
 
-  deleteProduct(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`)
-      .pipe(
-        tap(data => console.log('Product: ' + JSON.stringify(data))),
-        catchError(this.handleError)
-      );
-  }
-
-  private handleError(err: any) {
-    let errorMessage: string;
-    if (err.error instanceof ErrorEvent) {
-      errorMessage = `An error occurred: ${err.error.message}`;
-    } else {
-      errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
-    }
-    console.error(err);
-    return throwError(errorMessage);
+  deleteProduct(productId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${productId}`, this.getHttpOptions());
   }
 }

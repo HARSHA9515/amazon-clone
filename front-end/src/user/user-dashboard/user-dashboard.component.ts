@@ -23,7 +23,7 @@ export class UserDashboardComponent {
   ngOnInit(): void {
     this.loadProducts();
   }
-  
+
   loadProducts(): void {
     console.log('Loading products...');
     this.productService.getProducts().subscribe((products: Product[]) => {
@@ -36,17 +36,17 @@ export class UserDashboardComponent {
     {
       breakpoint: '1024px',
       numVisible: 3,
-      numScroll: 1, 
+      numScroll: 1,
     },
     {
       breakpoint: '768px',
       numVisible: 2,
-      numScroll: 1, 
+      numScroll: 1,
     },
     {
       breakpoint: '560px',
       numVisible: 1,
-      numScroll: 1, 
+      numScroll: 1,
     },
   ];
 }

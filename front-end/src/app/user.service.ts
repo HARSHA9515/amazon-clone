@@ -17,49 +17,22 @@ export class UserService {
     this.token = sessionStorage.getItem('token')
    }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<{token: string}>('http://localhost:3000/api/login', { username, password })
-      .pipe(
-        tap((response) => {
-          this.setToken(response.token);
-        })
-      );
-  }
-  
-  private setToken(token: string): void {
-    sessionStorage.setItem('token', token);
-    this.token = token;
-  }
   private getToken(): string | null {
     return sessionStorage.getItem('token');
   }
 
-getUsers(): Observable<any> {
-  const headers = new HttpHeaders({
-    Authorization:`Bearer ${ this.getToken()}`
-  });
-  return this.http.get(this.apiUrl, { headers}).pipe (
-    tap((response: any) =>{
-      return response.map((user: {id: any; username: any; role: any; isActive: any}) => ({
-        id: user.id,
-        username: user.username,
-        role: user.role,
-        isActive: user.isActive,
-      }));
-    })
-  )
-}
-
-
-
-  logout(): Observable<any> {
+  getUsers(): Observable<any> {
     const headers = new HttpHeaders({
-      Authorization:`Bearer ${this.token}`
+      Authorization:`Bearer ${ this.getToken()}`
     });
-    return this.http.post('http://localhost:3000/api/logout', {}, {headers}).pipe(
-      tap(() =>{        
-        sessionStorage.removeItem('token');
-        this.token = null;
+    return this.http.get(this.apiUrl, { headers, withCredentials: true}).pipe (
+      tap((response: any) =>{
+        return response.map((user: {id: any; username: any; role: any; isActive: any}) => ({
+          id: user.id,
+          username: user.username,
+          role: user.role,
+          isActive: user.isActive,
+        }));
       })
     )
   }
