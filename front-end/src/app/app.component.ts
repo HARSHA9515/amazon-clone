@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from "./login/login.component";
@@ -17,7 +18,7 @@ import { AuthService } from './shared/services/auth.service';
 export class AppComponent implements OnInit {
   title = 'amazon';
   private role: string | null = null;
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     // Check session on initialization
@@ -28,6 +29,8 @@ export class AppComponent implements OnInit {
           this.router.navigate(['/login']);
         } else if (this.role === 'admin') {
           this.router.navigate(['/admin-dashboard']);
+        } else if(this.router.url.includes("/admin-dashboard") && this.role !== 'admin'){
+          this.router.navigate(['/']);
         }
       },
       error: () => {
@@ -35,18 +38,5 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
-
-    // Listen for router events
-    this.router.events.subscribe((event: NavigationEvent) => {
-      if (event instanceof NavigationStart) {
-        this.checkAdminAccess(event.url);
-      }
-    });
-  }
-
-  private checkAdminAccess(url: string) {
-    if (url.includes('/admin-dashboard') && this.role !== 'admin') {
-      this.router.navigate(['/']);
-    }
   }
 }
