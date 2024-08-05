@@ -1,0 +1,34 @@
+<app-header></app-header>
+<div class="container px-1">
+  <mat-grid-list cols="5" gutterSize="16px">
+    <mat-grid-tile *ngFor="let category of categories" [colspan]="1" [rowspan]="1">
+      <mat-card>
+        <ng-container *ngIf="category.imageUrl; else defaultIcon">
+          <div  style="display: flex;justify-content: center;width: 100%;">
+            <img mat-card-image [src]="category.imageUrl" alt="{{ category.name }}" />
+          </div>
+        </ng-container>
+        <ng-template #defaultIcon>
+          <div mat-card-content style="display: flex;justify-content: center;width: 100%;">
+            <i class="pi pi-image" style="font-size: 10rem;"></i>
+          </div>
+        </ng-template>
+        <mat-card-content>
+          <p>{{ category.name }}</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<p-carousel [value]="products" [numVisible]="4" [responsiveOptions]="responsiveOptions">
+  <ng-template pTemplate="item" let-product>
+    <div class="m-2 p-1" (click)="goToProduct(product.id)" style="cursor: pointer;">
+      <p-card>
+        <img [src]="product.productImageUrl" alt="{{product.productName}}" height="200" width="auto">
+        <p>{{ product.productName }}</p>
+        <b>{{ product.productPrice | currency:'INR':'symbol' }}</b>
+      </p-card>
+    </div>
+  </ng-template>
+</p-carousel>
+<app-footer></app-footer>
