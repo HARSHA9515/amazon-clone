@@ -1,7 +1,11 @@
+
 mat-grid-tile {
   display: flex;
   justify-content: center;
   align-items: center;
+  img {
+    height: 180px;
+  }
 }
 
 mat-card {

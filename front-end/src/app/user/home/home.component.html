@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="container px-1">
+<div class="container px-1 mt-4">
   <mat-grid-list cols="5" gutterSize="16px">
     <mat-grid-tile *ngFor="let category of categories" [colspan]="1" [rowspan]="1">
       <mat-card (click)="goToCategory(category.id)" >
@@ -20,15 +20,17 @@
     </mat-grid-tile>
   </mat-grid-list>
 </div>
-<p-carousel [value]="products" [numVisible]="4" [responsiveOptions]="responsiveOptions">
-  <ng-template pTemplate="item" let-product>
-    <div class="m-2 p-1" (click)="goToProduct(product.id)" style="cursor: pointer;">
-      <p-card>
-        <img [src]="product.productImageUrl" alt="{{product.productName}}" height="200" width="auto">
-        <p>{{ product.productName }}</p>
-        <b>{{ product.productPrice | currency:'INR':'symbol' }}</b>
-      </p-card>
-    </div>
-  </ng-template>
-</p-carousel>
+<div class="mt-4">
+  <p-carousel [value]="products" [numVisible]="4" [responsiveOptions]="responsiveOptions">
+    <ng-template pTemplate="item" let-product>
+      <div class="m-2 p-1" (click)="goToProduct(product.id)" style="cursor: pointer;">
+        <p-card>
+          <img [src]="product.productImageUrl" alt="{{product.productName}}" width="auto" style="height: 240px;">
+          <p>{{ product.productName }}</p>
+          <b>{{ product.productPrice | currency:'INR':'symbol' }}</b>
+        </p-card>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
 <app-footer></app-footer>
