@@ -35,7 +35,7 @@
                   <td>{{ getCategoryNameById(product.categoryId) }}</td>
                   <td>{{ product.productDescription }}</td>
                   <td>{{ product.productPrice | currency:'INR':'symbol' }}</td>
-                  <td>
+                  <td style="width: 150px;">
                     <button pButton icon="pi pi-pencil" (click)="editProduct(product)" class="p-button-rounded p-button-info me-2"></button>
                     <button pButton icon="pi pi-trash" (click)="deleteProduct(product)" class="p-button-rounded p-button-danger"></button>
                   </td>
