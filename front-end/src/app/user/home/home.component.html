@@ -2,7 +2,7 @@
 <div class="container px-1">
   <mat-grid-list cols="5" gutterSize="16px">
     <mat-grid-tile *ngFor="let category of categories" [colspan]="1" [rowspan]="1">
-      <mat-card>
+      <mat-card (click)="goToCategory(category.id)" >
         <ng-container *ngIf="category.imageUrl; else defaultIcon">
           <div  style="display: flex;justify-content: center;width: 100%;">
             <img mat-card-image [src]="category.imageUrl" alt="{{ category.name }}" />

@@ -16,20 +16,22 @@ import { AuthService } from './shared/services/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'amazon';
-
+  private role: string | null = null;
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     // Check session on initialization
     this.authService.checkSession().subscribe({
       next: (response) => {
+        this.role = response.role;
         if (!response.role) {
           this.router.navigate(['/login']);
-        } else if (this.authService.isAdmin()) {
+        } else if (this.role === 'admin') {
           this.router.navigate(['/admin-dashboard']);
         }
       },
       error: () => {
+        this.role = null;
         this.router.navigate(['/login']);
       }
     });
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   private checkAdminAccess(url: string) {
-    if (url.includes('/admin-dashboard') && !this.authService.isAdmin()) {
+    if (url.includes('/admin-dashboard') && this.role !== 'admin') {
       this.router.navigate(['/']);
     }
   }

@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { CarouselModule } from 'primeng/carousel';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -13,47 +13,37 @@ import { ProductAttributesService } from '../../products_attributes.service';
 import { Category } from '../../shared/models/productAttributes';
 
 @Component({
-  selector: 'app-home',
+  selector: 'category-page',
   standalone: true,
-  imports: [HeaderComponent, CarouselModule, ButtonModule, CardModule, FooterComponent,MatGridListModule,MatCardModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  imports: [HeaderComponent, CarouselModule, ButtonModule, CardModule, FooterComponent, MatGridListModule, MatCardModule],
+  templateUrl: './category-page.component.html',
+  styleUrl: './category-page.component.scss'
 })
-export class UserDashboardComponent {
+export class CategoryPageComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
 
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private productService: ProductService,
-    private productAttributesService: ProductAttributesService,
-    private cdRef:ChangeDetectorRef){}
+    private cdRef: ChangeDetectorRef) { }
+
   ngOnInit(): void {
-    this.loadCategories();
     this.loadProducts();
   }
-  loadCategories(): void {
-    this.productAttributesService.getCategories().subscribe({
-      next: (categories) => {
-        console.log("categories",categories);
-        this.categories = categories;
-      },
-    });
-  }
+
   loadProducts(): void {
-    this.productService.getProducts().subscribe((products: Product[]) => {
+    const categoryId = this.route.snapshot.paramMap.get('id');
+    this.productService.getProducts(categoryId).subscribe((products: Product[]) => {
       this.products = products;
-      this.cdRef.detectChanges(); // Update the template
+      this.cdRef.detectChanges();
     });
   }
 
   goToProduct(productId: string | undefined): void {
     this.router.navigate(['/product', productId]);
-  }
-
-  goToCategory(categoryId: string | undefined): void {
-    this.router.navigate(['/category', categoryId]);
   }
 
   responsiveOptions = [

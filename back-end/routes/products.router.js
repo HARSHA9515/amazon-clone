@@ -85,19 +85,22 @@ router.put('/products/:id', isAdminLoggedIn, upload.single('productImage'), asyn
 // Get all products with category names
 router.get('/products', async (req, res) => {
   try {
+    const categoryId = req.query.categoryId;
+    console.log("categoryId",categoryId);
+    
     const productsRef = db.collection('products');
-    const snapshot = await productsRef.get();
+    let snapshot = {}
     const products = [];
-
-    // const categoryNameMap = await getCategoriesObj();
-    // const productTypeMap = await getProductTypeObj();
-    // const productBrandMap = await getProductBrandObj();
+    if(categoryId){
+      snapshot = await productsRef.where('categoryId', '==', categoryId).get();
+    }else{
+      snapshot = await productsRef.get();
+    }
+    const categoryNameMap = await getCategoriesObj(categoryId);
     snapshot.forEach(doc => {
       const product = doc.data();
       product.id = doc.id;
-      // product.categoryName = categoryNameMap[product.categoryId] || '-';
-      // product.brandName = productBrandMap[product.brandNameId] || '-';
-      // product.productType = productTypeMap[product.productTypeId] || '-';
+      product.categoryName = categoryNameMap[product.categoryId] || '-';
       products.push(product);
     });
 

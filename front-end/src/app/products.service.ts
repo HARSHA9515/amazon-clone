@@ -17,8 +17,13 @@ export class ProductService {
     };
   }
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.baseUrl, this.getHttpOptions());
+  getProducts(categoryId?: string | null): Observable<Product[]> {
+    if(categoryId){
+      return this.http.get<Product[]>(`${this.baseUrl}?categoryId=${categoryId}`, this.getHttpOptions());
+    }else{
+      return this.http.get<Product[]>(this.baseUrl, this.getHttpOptions());
+
+    }
   }
 
   getProductById(productId: string): Observable<Product[]> {
