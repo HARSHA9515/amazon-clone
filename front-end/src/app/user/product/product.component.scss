@@ -1,0 +1,39 @@
+.container {
+  max-width: 1200px;
+}
+
+img {
+  max-height: 400px;
+}
+
+.mat-card-header {
+  background-color: #f8f9fa;
+}
+
+.mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+.img-fluid {
+  max-height: 400px;
+  width: 100%;
+}
+
+p-card {
+  margin-bottom: 20px;
+}
+
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.p-skeleton {
+  margin-bottom: 20px;
+}

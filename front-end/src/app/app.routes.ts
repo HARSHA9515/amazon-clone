@@ -1,29 +1,29 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-
-import { AdminDahboardComponent } from '../admin/admin-dahboard/admin-dahboard.component';
-import { UserDashboardComponent } from '../user/user-dashboard/user-dashboard.component';
-import { AdminProductsComponent } from '../admin/admin-products/admin-products.component';
-
+import { ProductComponent } from './user/product/product.component';
+import { CategoryPageComponent } from './user/category-page/category-page.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { UserDashboardComponent } from './user/home/home.component';
 export const routes: Routes = [
-  { 
+  {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    component: UserDashboardComponent
   },
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     component: LoginComponent
   },
-  { 
+  {
     path: 'admin-dashboard',
-    component:AdminDahboardComponent,
-    children:[
-      {
-        path: 'admin-products',
-        component: AdminProductsComponent
-      }
-    ]
+    component:AdminDashboardComponent
   },
-  { path: 'user-dashboard', component:UserDashboardComponent}
+  {
+    path: 'product/:id',
+    component: ProductComponent
+  },
+  {
+    path: 'category/:id',
+    component: CategoryPageComponent
+  }
+
 ];

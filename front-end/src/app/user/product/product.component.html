@@ -1,0 +1,63 @@
+<app-header></app-header>
+<div class="container my-5">
+  <ng-container *ngIf="loading; else productTemplate">
+    <div class="row" style="min-height: 400px;">
+        <p-card [style]="{ height: '100%'}">
+          <div class="d-flex flex-row gap-4" >
+            <div class="col-md-6">
+              <p-skeleton shape="rectangle" height="400px"></p-skeleton>
+            </div>
+            <div class="col-md-6 d-flex flex-column gap-4">
+              <p-skeleton shape="text" width="80%"></p-skeleton>
+              <p-skeleton shape="text" width="60%"></p-skeleton>
+              <p-skeleton shape="text" width="60%"></p-skeleton>
+              <p-skeleton shape="text" width="50%"></p-skeleton>
+              <p-skeleton shape="text" width="40%"></p-skeleton>
+              <p-skeleton shape="text" width="40%"></p-skeleton>
+            </div>
+          </div>
+        </p-card>
+
+    </div>
+  </ng-container>
+  <ng-template #productTemplate>
+    <div>
+      <div class="row">
+        <div class="col-md-6 d-flex justify-content-center">
+          <img [src]="product.productImageUrl" alt="{{ product.productName }}" height="100%" width="auto">
+        </div>
+        <div class="col-md-6 d-flex flex-column">
+          <h5 class="border-bottom bold p-2">{{ product.productName }}</h5>
+          <span>{{ product.productDescription }}</span>
+          <span>Category: {{ product.categoryName }}</span>
+          <span>Type: {{ product.productType }}</span>
+          <h6>Brand: {{ product.brandName }}</h6>
+          <p class="text-success">{{ product.productPrice | currency: 'INR' }}</p>
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex flex-column gap-2">
+              <label for="price">Quantity</label>
+              <p-inputNumber
+                [(ngModel)]="quantityValue"
+                [min]="1"
+                [max]="5"
+                [step]="1"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                inputId="quantity"
+                spinnerMode="horizontal"
+                decrementButtonClass="p-button-secondary"
+                incrementButtonClass="p-button-secondary"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus" />
+              </div>
+              <div class="d-flex flex-row gap-3">
+                <p-button label="Add to card" icon="pi pi-shopping-cart"/>
+                <p-button label="Add to wishlist" icon="pi pi-heart" severity="help" />
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<app-footer></app-footer>

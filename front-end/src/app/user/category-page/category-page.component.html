@@ -1,0 +1,29 @@
+<app-header></app-header>
+
+<div class="container px-1 mt-4 mb-4" style="min-height: 600px;">
+  <mat-grid-list cols="5" gutterSize="16px" style="height: 350px;">
+    <mat-grid-tile *ngFor="let product of products" [colspan]="1" [rowspan]="1" style="display: flex; align-items: center; justify-content: center;height: 100%;">
+      <mat-card
+        (click)="goToProduct(product.id)"
+        class="product-card"
+      >
+        <ng-container *ngIf="product.productImageUrl; else defaultIcon">
+          <div style="display: flex; justify-content: center; width: 100%;">
+            <img mat-card-image [src]="product.productImageUrl" alt="{{ product.productName }}" style="max-width: 100%; max-height: 200px;"/>
+          </div>
+        </ng-container>
+        <ng-template #defaultIcon>
+          <div mat-card-content style="display: flex; justify-content: center; width: 100%; height: 200px;">
+            <i class="pi pi-image" style="font-size: 10rem;"></i>
+          </div>
+        </ng-template>
+        <mat-card-content>
+          <p>{{ product.productName }}</p>
+          <b>Price: {{ product.productPrice | currency:'INR':'symbol' }}</b>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+<app-footer></app-footer>
